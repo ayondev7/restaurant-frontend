@@ -18,6 +18,7 @@ const HeroSection: React.FC = () => {
   const circleRef2 = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const masterTimeline = useRef<gsap.core.Timeline>();
+  const mainImageRef = useRef<HTMLImageElement>(null);
 
   const handlePlateClick = (index: number) => {
     if (index === activeIndex) return;
@@ -50,23 +51,44 @@ const HeroSection: React.FC = () => {
       defaults: { duration: 2, ease: "sine.inOut" },
     });
 
-    masterTimeline.current.to(circleRef.current, { rotate: newRotation }, 0).to(
-      [sectionRef.current, circleRef.current, circleRef2.current],
-      {
-        backgroundColor: (i) =>
-          i === 0 ? colorSets[index].bg : colorSets[index].circle,
-        duration: 1,
-        ease: "sine.inOut",
-      },
-      0
-    );
+    masterTimeline.current
+      .to(circleRef.current, { rotate: newRotation }, 0)
+      .to(
+        [sectionRef.current, circleRef.current, circleRef2.current],
+        {
+          backgroundColor: (i) =>
+            i === 0 ? colorSets[index].bg : colorSets[index].circle,
+          duration: 1,
+          ease: "sine.inOut",
+        },
+        0
+      );
 
-    setActiveIndex(index);
+    if (mainImageRef.current) {
+      gsap.to(mainImageRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          setActiveIndex(index);
+        },
+      });
+    } else {
+      setActiveIndex(index);
+    }
   };
 
   useEffect(() => {
-    if (!sectionRef.current || !circleRef.current || !circleRef2.current)
-      return;
+    if (mainImageRef.current) {
+      gsap.fromTo(
+        mainImageRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, ease: "power1.inOut" }
+      );
+    }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (!sectionRef.current || !circleRef.current || !circleRef2.current) return;
 
     gsap.set(sectionRef.current, { backgroundColor: colorSets[0].bg });
     gsap.set([circleRef.current, circleRef2.current], {
@@ -79,7 +101,7 @@ const HeroSection: React.FC = () => {
       <Navbar />
       <section
         ref={sectionRef}
-        className="min-h-screen relative px-16 pt-48 pb-12 overflow-hidden"
+        className="min-h-screen relative px-16 pt-48 pb-12 overflow-hidden rounded-b-3xl"
       >
         <div
           ref={circleRef}
@@ -88,6 +110,14 @@ const HeroSection: React.FC = () => {
         <div
           ref={circleRef2}
           className="w-[900px] h-[900px] rounded-full absolute bottom-[-400px] right-[-400px] z-0 overflow-hidden"
+        />
+
+        <Image
+          ref={mainImageRef}
+          className="absolute bottom-5 right-15 z-10"
+          src={plates[activeIndex].src}
+          alt="plate"
+          priority
         />
 
         <div className="container mx-auto flex items-center justify-between flex-wrap md:flex-nowrap relative z-10 h-full">
@@ -116,7 +146,7 @@ const HeroSection: React.FC = () => {
                 return (
                   <div
                     key={plate.id}
-                    className="flex flex-col items-center justify-center transition-all duration-300"
+                    className="flex flex-col items-center justify-center transition-all duration-300 cursor-pointer"
                     onClick={() => isClickable && handlePlateClick(index)}
                   >
                     <Image
@@ -127,7 +157,7 @@ const HeroSection: React.FC = () => {
                       className="w-[200px] h-[200px] transition-transform duration-300"
                     />
                     {activeIndex === index && (
-                      <div className="h-1 w-10 bg-white rounded-full mt-2 transition-all duration-300" />
+                      <div className="h-1 w-36 absolute bottom-[-8] bg-white rounded-full transition-all duration-300" />
                     )}
                   </div>
                 );

@@ -28,13 +28,13 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
 
   return (
     <>
-      <div className="flex justify-between w-full mt-4 mb-12">
+      <div className="flex justify-between w-full mt-4 mb-6 md:mb-12">
         <section>
-          <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <ul className="grid grid-cols-4 md:grid-cols-5 gap-1 md:gap-4">
             {categories.map((cat) => (
               <li
                 key={cat}
-                className={`border border-[#BABABA] py-2 px-6 rounded-full cursor-pointer text-center transition ${
+                className={`border border-[#BABABA] text-[7.5px] md:text-base py-1 md:py-2 px-2 md:px-6 rounded-full cursor-pointer text-center transition ${
                   activeCategory === cat
                     ? "bg-[#2C2C2C] text-white border-none"
                     : "hover:bg-gray-200"
@@ -48,10 +48,10 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
         </section>
 
         <section>
-          <ul className="flex gap-x-4">
+          <ul className="flex gap-x-1 md:gap-x-4">
             <li>
               <button
-                className="bg-[#2C2C2C] text-white py-2 px-6 rounded-full cursor-pointer"
+                className="bg-[#2C2C2C] text-white text-[7.5px] md:text-base py-1 md:py-2 px-2 md:px-6 rounded-full cursor-pointer"
                 onClick={() => setShowDishForm(true)}
               >
                 Add Food
@@ -59,7 +59,7 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
             </li>
             <li>
               <button
-                className="bg-[#2C2C2C] text-white py-2 px-6 rounded-full cursor-pointer"
+                className="bg-[#2C2C2C] text-white text-[7.5px] md:text-base py-1 md:py-2 px-2 md:px-6 rounded-full cursor-pointer"
                 onClick={() => setShowCategoryForm(true)}
               >
                 Add Category

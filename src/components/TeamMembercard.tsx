@@ -14,7 +14,7 @@ const TeamMembercard = ({ name, role}) => {
       />
       <div className="my-3 flex flex-col items-center">
         <h1 className="text-[#4F4F4F] text-lg font-semibold">{name}</h1>
-        <h2 className="text-[#828282] text-md">{role}</h2>
+        <h2 className="text-[#828282] text-base">{role}</h2>
       </div>
     </div>
   );

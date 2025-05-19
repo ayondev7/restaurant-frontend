@@ -25,7 +25,7 @@ const TeamSection = () => {
         <div className="absolute inset-0 bg-[#AD1519D9] z-10" />
         <div className="absolute top-[-50px] inset-0 flex flex-col items-center justify-center text-white text-center z-20">
           <h1 className="text-5xl font-bold">Team Member</h1>
-          <p className="mt-2 text-md max-w-xl">
+          <p className="mt-2 text-base max-w-xl">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Varius
             sed pharetra dictum neque massa congue
           </p>
