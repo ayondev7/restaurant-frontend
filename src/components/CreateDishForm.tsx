@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllCategories } from "@/lib/categoryService";
 
 interface Dish {
-  id: string;
+  _id: string;
   name: string;
   category: string;
   image: string;
@@ -18,7 +18,6 @@ interface Category {
 
 interface CreateDishFormProps {
   onClose: () => void;
-  onSubmit?: (formData: FormData) => void; 
 }
 
 const createDish = async (formData: FormData): Promise<Dish> => {
@@ -33,7 +32,7 @@ const createDish = async (formData: FormData): Promise<Dish> => {
   return response.json();
 };
 
-const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose, onSubmit }) => {
+const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -84,12 +83,7 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose, onSubmit }) =>
     formData.append("name", name);
     formData.append("category", category);
     formData.append("image", image);
-
-    if (onSubmit) {
-      onSubmit(formData);
-    } else {
-      mutate(formData);
-    }
+    mutate(formData);
   };
 
   return (

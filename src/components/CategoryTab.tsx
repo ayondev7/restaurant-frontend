@@ -73,9 +73,6 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
       {showDishForm && (
         <CreateDishForm
           onClose={() => setShowDishForm(false)}
-          onSubmit={(formData) => {
-            setShowDishForm(false);
-          }}
         />
       )}
 
