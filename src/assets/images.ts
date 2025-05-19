@@ -3,9 +3,11 @@ import plate2 from "./images/img2.png";
 import plate3 from "./images/img3.png";
 import plate4 from "./images/img4.png";
 
+import { StaticImageData } from "next/image";
+
 export interface Plate {
   id: number;
-  src: string;
+  src: string | StaticImageData; 
   alt: string;
 }
 

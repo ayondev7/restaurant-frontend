@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import CreateDishForm from "./CreateDishForm";
 import CreateCategoryForm from "./CreateCategoryForm";
 import { useQuery } from "@tanstack/react-query";
-import { Category, getAllCategories } from "../app/api/categories/route";
+import { Category } from "@/lib/categoryService";
+import { getAllCategories } from "@/lib/categoryService";
 
 interface Props {
   onFilter: (category: string) => void;

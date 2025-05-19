@@ -1,116 +1,188 @@
 'use client';
-import React, { useState, useRef, useEffect } from "react";
-import { CiSearch } from "react-icons/ci";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllCategories } from "@/lib/categoryService";
 
 interface Dish {
   id: string;
   name: string;
   category: string;
-  imageUrl: string;
+  image: string;
 }
 
-const fetchDishes = async (): Promise<Dish[]> => {
-  const res = await fetch('/api/dishes');
-  if (!res.ok) throw new Error('Failed to fetch dishes');
-  return res.json();
+interface Category {
+  id: string; // Changed from _id to id for consistency
+  name: string;
+}
+
+interface CreateDishFormProps {
+  onClose: () => void;
+}
+
+const createDish = async (formData: FormData): Promise<Dish> => {
+  const response = await fetch("/api/dishes", {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to create dish");
+  }
+  return response.json();
 };
 
-const Navbar = () => {
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const searchContainerRef = useRef<HTMLDivElement>(null);
+const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+  const [showCategoryOptions, setShowCategoryOptions] = useState(false);
 
-  const { data: dishes = [] } = useQuery({
-    queryKey: ["dishes"],
-    queryFn: fetchDishes,
+  const queryClient = useQueryClient();
+
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+    onError: () => toast.error("Failed to load categories"),
   });
 
-  const filteredDishes = dishes.filter((dish) =>
-    dish.name.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const { mutate, isLoading } = useMutation({
+    mutationFn: createDish,
+    onSuccess: (newDish) => {
+      toast.success("Food added successfully!");
+      setName("");
+      setCategory("");
+      setImage(null);
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ["dishes"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Server error");
+    },
+  });
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target as Node)
-      ) {
-        setSearchFocused(false);
-      }
-    };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !category || !image) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("image", image);
+    mutate(formData);
+  };
 
   return (
-    <div className="flex items-center justify-between w-full h-20 px-6 absolute top-4 left-0 z-20">
-      <div className="h-full flex items-center px-6">
-        <h1 className="text-white font-bold text-3xl">RESTAURANT</h1>
-      </div>
-
-      {/* Search Container */}
-      <div className="relative" ref={searchContainerRef} style={{ width: "500px" }}>
-        {/* Search Input and Dropdown Container */}
-        <div 
-          className={`bg-opacity-30 bg-white backdrop-blur-sm text-[#2D2D2D] transition-all duration-300 ease-in-out overflow-hidden ${
-            searchFocused ? 'rounded-xl' : 'rounded-2xl'
-          }`}
-          style={{ 
-            height: searchFocused ? (filteredDishes.length > 0 ? '350px' : '100px') : '56px'
-          }}
-        >
-          {/* Input Box - Always visible */}
-          <div className="flex items-center px-4 py-2">
-            <CiSearch className="text-[#2D2D2D] text-3xl font-semibold" />
+    <div
+      className="fixed inset-0 bg-[rgba(0,0,0,0.7)] flex items-center justify-center z-20"
+      onClick={onClose}
+    >
+      <div
+        className="w-80 rounded-2xl p-6 z-30 bg-[rgba(104,104,104,0.7)] text-white shadow-lg border border-white border-opacity-20 backdrop-blur-sm"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-center text-xl font-medium mb-4">Add Food</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
             <input
               type="text"
-              placeholder="Search...."
-              className="outline-none w-full ml-6 text-lg font-semibold bg-transparent text-[#2D2D2D] placeholder-[#2D2D2D]"
-              onFocus={() => setSearchFocused(true)}
-              onChange={(e) => setSearchValue(e.target.value)}
-              value={searchValue}
+              placeholder="Food Name"
+              className="w-full bg-transparent rounded-full border border-white bg-opacity-40 backdrop-blur-sm text-white px-4 py-2 focus:outline-none placeholder:text-white"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={isLoading}
             />
           </div>
-
-          {/* Dropdown Results - Only visible when focused */}
-          {searchFocused && (
-            <div className="overflow-y-auto max-h-[280px]">
-              {filteredDishes.length > 0 ? (
-                filteredDishes.map((dish) => (
-                  <div
-                    key={dish.id}
-                    className="flex items-center p-3 cursor-pointer"
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      setSearchValue(dish.name);
-                      setSearchFocused(false);
-                    }}
-                  >
-                    <div className="h-12 w-12 rounded overflow-hidden mr-4">
-                      <img
-                        src={dish.imageUrl}
-                        alt={dish.name}
-                        className="h-full w-full object-cover"
-                      />
+          <div className="mb-3 relative">
+            <div
+              tabIndex={0}
+              onClick={() => setShowCategoryOptions((prev) => !prev)}
+              onBlur={() => {
+                // Delay closing to allow click event on options
+                setTimeout(() => setShowCategoryOptions(false), 150);
+              }}
+              className={`w-full bg-transparent border border-white bg-opacity-40 backdrop-blur-sm text-white px-4 py-2 cursor-pointer focus:outline-none placeholder:text-white transition-all duration-300 ease-in-out overflow-hidden flex flex-col ${
+                showCategoryOptions ? "h-48 rounded-md" : "h-11 rounded-full"
+              }`}
+            >
+              <div className="flex-shrink-0">
+                {category || "Food Category"}
+              </div>
+              {showCategoryOptions && (
+                <div className="mt-2 flex flex-col gap-1 overflow-auto max-h-32">
+                  {categories.map((cat) => (
+                    <div
+                      key={cat._id}
+                      className="py-1 rounded cursor-pointer"
+                      onMouseDown={(e) => {
+                        e.preventDefault(); // prevent losing focus before onClick
+                        setCategory(cat.name);
+                        setShowCategoryOptions(false);
+                      }}
+                    >
+                      {cat.name}
                     </div>
-                    <div className="font-medium">{dish.name}</div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-4 text-gray-500">
-                  No results found.
+                  ))}
                 </div>
               )}
             </div>
-          )}
-        </div>
+          </div>
+          <div
+            className={`relative mb-3 border-2 overflow-hidden px-4 bg-[rgba(210,51,47,0.25)] border-dashed rounded-full py-2 text-center cursor-pointer transition ${
+              dragActive ? "border-[#d2332f]" : "border-[#d2332f]"
+            }`}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragActive(true);
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              setDragActive(false);
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragActive(false);
+              if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                setImage(e.dataTransfer.files[0]);
+              }
+            }}
+            onClick={() => document.getElementById("file-upload")?.click()}
+          >
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+              disabled={isLoading}
+            />
+            {image ? (
+              <p className="text-sm">{image.name}</p>
+            ) : (
+              <p className="text-sm">Upload or Drag image here</p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#d2332f] cursor-pointer text-white py-2 rounded-full transition duration-200 disabled:opacity-60"
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Save"}
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default Navbar;
+export default CreateDishForm;

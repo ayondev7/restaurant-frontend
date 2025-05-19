@@ -2,7 +2,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createCategory } from "../app/api/categories/route"; 
+import { createCategory } from "@/lib/categoryService"; 
 
 interface CreateCategoryFormProps {
   onClose: () => void;
