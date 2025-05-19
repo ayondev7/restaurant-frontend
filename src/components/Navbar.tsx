@@ -48,9 +48,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between w-full h-20 px-6 absolute top-4 left-0 z-20">
-      <div className="h-full flex items-center px-6">
-        <h1 className="text-white font-bold text-3xl">RESTAURANT</h1>
+    <div className="flex items-center justify-between w-full h-20 p-4 md:px-6 absolute top-4 left-0 z-20">
+      <div className="h-full flex items-center md:px-6">
+        <h1 className="text-white font-bold text-3xl hidden md:block">RESTAURANT</h1>
       </div>
 
       
@@ -61,7 +61,7 @@ const Navbar = () => {
       >
       
         <div
-          className={`flex items-center px-4 py-2 min-h-[56px] bg-opacity-30 bg-white backdrop-blur-sm ${
+          className={`flex items-center px-4 py-2 md:min-h-[56px] bg-opacity-30 bg-white backdrop-blur-sm ${
             searchFocused ? "rounded-t-2xl" : "rounded-2xl"
           }`}
         >

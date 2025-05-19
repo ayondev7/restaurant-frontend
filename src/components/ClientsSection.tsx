@@ -13,13 +13,13 @@ const clients = [client1, client2, client3, client4, client5, client6];
 
 const ClientsSection = () => {
   return (
-    <div className='pt-32 pb-28 flex flex-col items-center overflow-hidden bg-white'>
+    <div className='pt-12 md:pt-32 pb-28 flex flex-col items-center overflow-hidden bg-white'>
       <div className='gap-y-2 flex flex-col items-center mb-16 text-center px-4'>
         <h2 className='text-[#A52A2A] text-base'>Partners & Clients</h2>
-        <h1 className='text-5xl text-black font-bold'>We work with the best people</h1>
+        <h1 className='text-3xl md:text-5xl text-black font-bold'>We work with the best people</h1>
       </div>
 
-      <div className="relative overflow-hidden mx-48 w-full max-w-[calc(100%-24rem)]">
+      <div className="relative overflow-hidden md:mx-48 w-full max-w-[calc(100%-24rem)]">
         <motion.div
           className="flex gap-x-16"
           animate={{ x: ['-100%', '0%'] }}

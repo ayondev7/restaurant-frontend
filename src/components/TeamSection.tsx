@@ -13,7 +13,7 @@ const TeamSection = () => {
 
   return (
     <div className="relative bg-white">
-      <div className="relative w-full h-[400px] overflow-hidden">
+      <div className="relative w-full h-[350px] md:h-[400px] overflow-hidden">
         <Image
           src={teambg}
           alt="Team Background"
@@ -24,15 +24,15 @@ const TeamSection = () => {
         />
         <div className="absolute inset-0 bg-[#AD1519D9] z-10" />
         <div className="absolute top-[-50px] inset-0 flex flex-col items-center justify-center text-white text-center z-20">
-          <h1 className="text-5xl font-bold">Team Member</h1>
-          <p className="mt-2 text-base max-w-xl">
+          <h1 className="text-3xl md:text-5xl font-bold">Team Member</h1>
+          <p className="mt-2 text-sm md:text-base max-w-xl">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Varius
             sed pharetra dictum neque massa congue
           </p>
         </div>
       </div>
 
-      <div className="relative z-30 -mt-30 flex gap-x-6 justify-center flex-wrap px-4">
+      <div className="relative z-30 -mt-20 md:-mt-30 flex gap-x-4 gap-y-6 md:gap-y-0 md:gap-x-6 justify-center flex-wrap md:px-4">
         {teamMembers.map((member, index) => (
           <TeamMembercard
             key={index}
