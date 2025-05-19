@@ -36,7 +36,7 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
                 key={cat}
                 className={`border border-[#BABABA] py-2 px-6 rounded-full cursor-pointer text-center transition ${
                   activeCategory === cat
-                    ? "bg-[#2C2C2C] text-white"
+                    ? "bg-[#2C2C2C] text-white border-none"
                     : "hover:bg-gray-200"
                 }`}
                 onClick={() => handleFilterClick(cat)}

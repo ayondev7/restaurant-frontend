@@ -13,8 +13,8 @@ const clients = [client1, client2, client3, client4, client5, client6];
 
 const ClientsSection = () => {
   return (
-    <div className='mt-32 mb-10 flex flex-col items-center overflow-hidden'>
-      <div className='gap-y-2 flex flex-col items-center mb-10 text-center px-4'>
+    <div className='pt-32 pb-28 flex flex-col items-center overflow-hidden bg-white'>
+      <div className='gap-y-2 flex flex-col items-center mb-16 text-center px-4'>
         <h2 className='text-[#A52A2A] text-md'>Partners & Clients</h2>
         <h1 className='text-5xl text-black font-bold'>We work with the best people</h1>
       </div>

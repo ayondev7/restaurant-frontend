@@ -5,7 +5,7 @@ import TeamSection from "@/components/TeamSection";
 import { Toaster } from "react-hot-toast";
 export default function Home() {
   return (
-    <div className="bg-white">
+    <div>
       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <HeroSection />
       <DishesSection />
