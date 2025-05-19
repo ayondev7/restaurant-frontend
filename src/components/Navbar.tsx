@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Dish {
-  id: string;
+  _id: string;
   name: string;
   category: string;
   image: string;

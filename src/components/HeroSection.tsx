@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
   const circleRef = useRef<HTMLDivElement>(null);
   const circleRef2 = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const masterTimeline = useRef<gsap.core.Timeline>();
+  const masterTimeline = useRef<gsap.core.Timeline | null>(null);
   const mainImageRef = useRef<HTMLImageElement>(null);
 
   const handlePlateClick = (index: number) => {

@@ -2,7 +2,12 @@ import React from "react";
 import Image from "next/image";
 import member from "../assets/images/teammember.jpg";
 
-const TeamMembercard = ({ name, role}) => {
+type TeamMemberCardProps = {
+  name: string;
+  role: string;
+};
+
+const TeamMembercard: React.FC<TeamMemberCardProps> = ({ name, role }) => {
   return (
     <div className="bg-[#fefefe] overflow-hidden w-[160px] md:w-[240px]">
       <Image

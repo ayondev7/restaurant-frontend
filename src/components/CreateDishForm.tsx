@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllCategories } from "@/lib/categoryService";
@@ -12,12 +12,13 @@ interface Dish {
 }
 
 interface Category {
-  id: string; // Changed from _id to id for consistency
+  _id: string;
   name: string;
 }
 
 interface CreateDishFormProps {
   onClose: () => void;
+  onSubmit?: (formData: FormData) => void; 
 }
 
 const createDish = async (formData: FormData): Promise<Dish> => {
@@ -32,7 +33,7 @@ const createDish = async (formData: FormData): Promise<Dish> => {
   return response.json();
 };
 
-const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
+const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose, onSubmit }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -41,13 +42,18 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: categories = [] } = useQuery<Category[]>({
+  const { data: categories = [], error } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: getAllCategories,
-    onError: () => toast.error("Failed to load categories"),
   });
 
-  const { mutate, isLoading } = useMutation({
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to load categories");
+    }
+  }, [error]);
+
+  const { mutate } = useMutation({
     mutationFn: createDish,
     onSuccess: (newDish) => {
       toast.success("Food added successfully!");
@@ -78,7 +84,12 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
     formData.append("name", name);
     formData.append("category", category);
     formData.append("image", image);
-    mutate(formData);
+
+    if (onSubmit) {
+      onSubmit(formData);
+    } else {
+      mutate(formData);
+    }
   };
 
   return (
@@ -100,7 +111,6 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              disabled={isLoading}
             />
           </div>
           <div className="mb-3 relative">
@@ -108,7 +118,6 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
               tabIndex={0}
               onClick={() => setShowCategoryOptions((prev) => !prev)}
               onBlur={() => {
-                // Delay closing to allow click event on options
                 setTimeout(() => setShowCategoryOptions(false), 150);
               }}
               className={`w-full bg-transparent border border-white bg-opacity-40 backdrop-blur-sm text-white px-4 py-2 cursor-pointer focus:outline-none placeholder:text-white transition-all duration-300 ease-in-out overflow-hidden flex flex-col ${
@@ -125,7 +134,7 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
                       key={cat._id}
                       className="py-1 rounded cursor-pointer"
                       onMouseDown={(e) => {
-                        e.preventDefault(); // prevent losing focus before onClick
+                        e.preventDefault();
                         setCategory(cat.name);
                         setShowCategoryOptions(false);
                       }}
@@ -138,9 +147,7 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
             </div>
           </div>
           <div
-            className={`relative mb-3 border-2 overflow-hidden px-4 bg-[rgba(210,51,47,0.25)] border-dashed rounded-full py-2 text-center cursor-pointer transition ${
-              dragActive ? "border-[#d2332f]" : "border-[#d2332f]"
-            }`}
+            className={`relative mb-3 border-2 overflow-hidden px-4 bg-[rgba(210,51,47,0.25)] border-dashed rounded-full py-2 text-center cursor-pointer transition border-[#d2332f]`}
             onDragOver={(e) => {
               e.preventDefault();
               setDragActive(true);
@@ -164,7 +171,6 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
               accept="image/*"
               className="hidden"
               onChange={handleImageChange}
-              disabled={isLoading}
             />
             {image ? (
               <p className="text-sm">{image.name}</p>
@@ -174,10 +180,9 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#d2332f] cursor-pointer text-white py-2 rounded-full transition duration-200 disabled:opacity-60"
-            disabled={isLoading}
+            className="w-full bg-[#d2332f] cursor-pointer text-white py-2 rounded-full transition duration-200"
           >
-            {isLoading ? "Saving..." : "Save"}
+            Save
           </button>
         </form>
       </div>

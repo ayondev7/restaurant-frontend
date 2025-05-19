@@ -3,10 +3,10 @@ import React from 'react';
 import DishCard from './DishCard';
 
 interface Dish {
-  id: string;
+  _id: string;
   name: string;
   category: string;
-  imageUrl: string;
+  image: string;
 }
 
 interface Props {

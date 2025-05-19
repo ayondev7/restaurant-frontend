@@ -6,10 +6,10 @@ import DishGridContainer from "./DishGridContainer";
 import Feedback from "./Feedback";
 
 interface Dish {
-  id: string;
+  _id: string;
   name: string;
   category: string;
-  imageUrl: string;
+  image: string;
 }
 
 const fetchDishes = async (): Promise<Dish[]> => {
