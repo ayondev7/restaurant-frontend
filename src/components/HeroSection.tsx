@@ -101,20 +101,20 @@ const HeroSection: React.FC = () => {
       <Navbar />
       <section
         ref={sectionRef}
-        className="min-h-screen relative px-16 pt-48 pb-12 overflow-hidden rounded-b-3xl"
+        className="min-h-screen relative px-12 md:px-16 pt-24 md:pt-48 pb-12 overflow-hidden rounded-b-3xl"
       >
         <div
           ref={circleRef}
-          className="w-[1000px] h-[1000px] rounded-full absolute top-[-340px] left-[-300px] z-0"
+          className="w-[400px] md:w-[1000px] h-[400px] md:h-[1000px] rounded-full absolute top-[-80px] left-[-120px] md:top-[-340px] md:left-[-300px] z-0"
         />
         <div
           ref={circleRef2}
-          className="w-[900px] h-[900px] rounded-full absolute bottom-[-400px] right-[-400px] z-0 overflow-hidden"
+          className="w-[400px] md:w-[900px] h-[400px] md:h-[900px] rounded-full absolute bottom-[-150px] right-[-150px] md:bottom-[-400px] md:bottom-[-400px] md:right-[-400px] z-0 overflow-hidden"
         />
 
         <Image
           ref={mainImageRef}
-          className="absolute bottom-5 right-15 z-10"
+          className="absolute bottom-5 right-15 z-10 w-[200px} hidden md:block"
           src={plates[activeIndex].src}
           alt="plate"
           priority
@@ -157,7 +157,7 @@ const HeroSection: React.FC = () => {
                       className="w-[200px] h-[200px] transition-transform duration-300"
                     />
                     {activeIndex === index && (
-                      <div className="h-1 w-36 absolute bottom-[-8] bg-white rounded-full transition-all duration-300" />
+                      <div className="h-1 w-12 md:w-36 absolute bottom-[-8] bg-white rounded-full transition-all duration-300" />
                     )}
                   </div>
                 );

@@ -52,7 +52,6 @@ const Navbar = () => {
       <div className="h-full flex items-center md:px-6">
         <h1 className="text-white font-bold text-3xl hidden md:block">RESTAURANT</h1>
       </div>
-
       
       <div
         className="relative"
