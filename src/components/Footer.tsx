@@ -87,7 +87,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mb-4 md:mb-0">
+        <div>
           <h2 className="text-xl font-bold mb-4">Links</h2>
           <ul className="space-y-2 grid grid-cols-4 md:grid-rows-4 md:grid-cols-1 text-sm md:text-lg">
             <li>
