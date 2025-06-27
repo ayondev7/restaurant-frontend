@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,12 +32,13 @@ const createDish = async (formData: FormData): Promise<Dish> => {
   return response.json();
 };
 
-const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
+const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [showCategoryOptions, setShowCategoryOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -54,6 +55,9 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
 
   const { mutate } = useMutation({
     mutationFn: createDish,
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: (newDish) => {
       toast.success("Food added successfully!");
       setName("");
@@ -61,9 +65,11 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
       setImage(null);
       onClose();
       queryClient.invalidateQueries({ queryKey: ["dishes"] });
+      setIsLoading(false);
     },
     onError: (error: any) => {
       toast.error(error.message || "Server error");
+      setIsLoading(false);
     },
   });
 
@@ -118,9 +124,7 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
                 showCategoryOptions ? "h-48 rounded-md" : "h-11 rounded-full"
               }`}
             >
-              <div className="flex-shrink-0">
-                {category || "Food Category"}
-              </div>
+              <div className="flex-shrink-0">{category || "Food Category"}</div>
               {showCategoryOptions && (
                 <div className="mt-2 flex flex-col gap-1 overflow-auto max-h-32">
                   {categories.map((cat) => (
@@ -174,9 +178,14 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose}) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#d2332f] cursor-pointer text-white py-2 rounded-full transition duration-200"
+            disabled={isLoading}
+            className={`w-full py-2 rounded-full transition duration-200 ${
+              isLoading
+                ? "bg-[#b42c29] cursor-not-allowed"
+                : "bg-[#d2332f] cursor-pointer"
+            }`}
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </form>
       </div>

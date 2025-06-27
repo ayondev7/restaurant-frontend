@@ -4,15 +4,11 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function POST(request: NextRequest) {
   try {
-    // Don't log the formData directly as it's a Promise and can only be consumed once
     const formData = await request.formData();
-    
-    // Log something else if needed for debugging
-    console.log('Received form data with fields:', [...formData.keys()]);
     
     const response = await fetch(`${BACKEND_URL}/api/dishes/create-dish`, {
       method: 'POST',
-      body: formData, // Send the formData as is
+      body: formData, 
     });
     
     if (!response.ok) {
