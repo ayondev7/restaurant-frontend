@@ -49,8 +49,8 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
         </section>
 
         <section>
-          <ul className="flex gap-x-1 md:gap-x-4">
-            <li>
+          <ul className="flex gap-x-1 md:gap-x-4 items-start">
+            <li className="flex items-start">
               <button
                 className="bg-[#2C2C2C] text-white text-[7.5px] md:text-base py-1 md:py-2 px-2 md:px-6 rounded-full cursor-pointer"
                 onClick={() => setShowDishForm(true)}
@@ -58,7 +58,7 @@ const CategoryTab: React.FC<Props> = ({ onFilter }) => {
                 Add Food
               </button>
             </li>
-            <li>
+            <li className="flex items-start">
               <button
                 className="bg-[#2C2C2C] text-white text-[7.5px] md:text-base py-1 md:py-2 px-2 md:px-6 rounded-full cursor-pointer"
                 onClick={() => setShowCategoryForm(true)}
