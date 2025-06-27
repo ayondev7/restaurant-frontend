@@ -19,9 +19,9 @@ const ClientsSection = () => {
         <h1 className='text-3xl md:text-5xl text-black font-bold'>We work with the best people</h1>
       </div>
 
-      <div className="relative overflow-hidden md:mx-48 w-full max-w-[calc(100%-24rem)]">
+      <div className="relative overflow-hidden w-full px-4 md:px-0 md:mx-48">
         <motion.div
-          className="flex gap-x-16"
+          className="flex gap-x-5 md:gap-x-16"
           animate={{ x: ['-100%', '0%'] }}
           transition={{
             repeat: Infinity,
@@ -31,7 +31,7 @@ const ClientsSection = () => {
           }}
         >
           {[...clients, ...clients].map((client, index) => (
-            <div key={index} className="flex-shrink-0 w-[145px] h-[128px] relative">
+            <div key={index} className="flex-shrink-0 w-[100px] h-[88px] md:w-[145px] md:h-[128px] relative">
               <Image
                 src={client}
                 alt={`Client ${index + 1}`}
