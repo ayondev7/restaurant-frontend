@@ -24,7 +24,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#880808] text-white font-poppins">
-      <div className="w-full px-2 md:px-48 py-12 flex flex-col gap-y-6 md:gap-y-0 md:flex-row md:justify-between">
+      <div className="w-full px-2 md:px-48 px-4 pt-8 md:py-12 flex flex-col gap-y-6 md:gap-y-0 md:flex-row md:justify-between">
         <div className="mb-4 md:mb-0">
           <h2 className="text-2xl font-bold mb-4">RESTAURANT</h2>
           <p className="mb-2 text-lg font-normal">Subscribe our newsletter and</p>
@@ -141,7 +141,7 @@ const Footer = () => {
       </div>
 
       <div className="bg-[#A52A2A] py-4 px-2 md:px-48 text-sm text-white flex flex-col md:flex-row justify-between items-center">
-        <p className="mb-2 md:mb-0">Copyright © 2025. All rights reserved</p>
+        <p className="mb-2 md:mb-0 text-xs md:text-base">Copyright © 2025. All rights reserved</p>
         <div className="space-x-4 hidden md:flex">
           <a href="#" className="hover:underline">
             Privacy Policy
