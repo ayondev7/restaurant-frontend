@@ -19,7 +19,7 @@ const ClientsSection = () => {
         <h1 className='text-3xl md:text-5xl text-black font-bold'>We work with the best people</h1>
       </div>
 
-      <div className="relative overflow-hidden w-full px-4 md:px-0 md:mx-48">
+      <div className="relative overflow-hidden w-full max-w-full md:max-w-7xl px-4 md:px-0 md:mx-48">
         <motion.div
           className="flex gap-x-5 md:gap-x-16"
           animate={{ x: ['-100%', '0%'] }}
