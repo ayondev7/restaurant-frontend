@@ -12,7 +12,7 @@ const TeamSection = () => {
   ];
 
   return (
-    <div className="relative bg-white">
+    <div className="relative bg-white font-poppins">
       <div className="relative w-full h-[350px] md:h-[400px] overflow-hidden">
         <Image
           src={teambg}

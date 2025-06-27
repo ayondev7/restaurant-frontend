@@ -48,7 +48,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between w-full h-20 p-4 md:px-6 absolute top-4 left-0 z-20">
+    <div className="flex items-center justify-between w-full h-20 p-4 md:px-6 absolute top-4 left-0 z-20 font-poppins">
       <div className="h-full flex items-center md:px-6">
         <h1 className="text-white font-bold text-3xl hidden md:block">RESTAURANT</h1>
       </div>
@@ -61,14 +61,14 @@ const Navbar = () => {
       
         <div
           className={`flex items-center px-4 py-2 md:min-h-[56px] bg-opacity-30 bg-white backdrop-blur-sm ${
-            searchFocused ? "rounded-t-2xl" : "rounded-2xl"
+            searchFocused ? "rounded-t-[7px]" : "rounded-[7px]"
           }`}
         >
           <CiSearch className="text-[#2D2D2D] text-3xl font-semibold" />
           <input
             type="text"
             placeholder="Search...."
-            className="outline-none w-full ml-6 text-lg font-semibold bg-transparent text-[#2D2D2D] placeholder-[#2D2D2D]"
+            className="outline-none w-full ml-6 font-normal md:font-semibold text-base md:text-2xl bg-transparent text-[#2D2D2D] placeholder-[#2D2D2D]"
             onFocus={() => setSearchFocused(true)}
             onChange={(e) => setSearchValue(e.target.value)}
             value={searchValue}

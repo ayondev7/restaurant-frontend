@@ -19,6 +19,13 @@ const HeroSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const masterTimeline = useRef<gsap.core.Timeline | null>(null);
   const mainImageRef = useRef<HTMLImageElement>(null);
+  const [expanded, setExpanded] = useState<boolean>(false);
+
+  const fullText =
+    "Breakfast, often referred to as the ‘most important meal of the day’, provides essential nutrients to kick start our day. It includes a variety of foods, like fruits, cereals, dairy products, and proteins, that contribute to a balanced diet.";
+
+  const shortText =
+    "Breakfast, often referred to as the ‘most important meal of the day’, provides essential nutrients to kick start our day.";
 
   const handlePlateClick = (index: number) => {
     if (index === activeIndex) return;
@@ -51,18 +58,16 @@ const HeroSection: React.FC = () => {
       defaults: { duration: 2, ease: "sine.inOut" },
     });
 
-    masterTimeline.current
-      .to(circleRef.current, { rotate: newRotation }, 0)
-      .to(
-        [sectionRef.current, circleRef.current, circleRef2.current],
-        {
-          backgroundColor: (i) =>
-            i === 0 ? colorSets[index].bg : colorSets[index].circle,
-          duration: 1,
-          ease: "sine.inOut",
-        },
-        0
-      );
+    masterTimeline.current.to(circleRef.current, { rotate: newRotation }, 0).to(
+      [sectionRef.current, circleRef.current, circleRef2.current],
+      {
+        backgroundColor: (i) =>
+          i === 0 ? colorSets[index].bg : colorSets[index].circle,
+        duration: 1,
+        ease: "sine.inOut",
+      },
+      0
+    );
 
     if (mainImageRef.current) {
       gsap.to(mainImageRef.current, {
@@ -88,7 +93,8 @@ const HeroSection: React.FC = () => {
   }, [activeIndex]);
 
   useEffect(() => {
-    if (!sectionRef.current || !circleRef.current || !circleRef2.current) return;
+    if (!sectionRef.current || !circleRef.current || !circleRef2.current)
+      return;
 
     gsap.set(sectionRef.current, { backgroundColor: colorSets[0].bg });
     gsap.set([circleRef.current, circleRef2.current], {
@@ -109,30 +115,37 @@ const HeroSection: React.FC = () => {
         />
         <div
           ref={circleRef2}
-          className="w-[400px] md:w-[900px] h-[400px] md:h-[900px] rounded-full absolute bottom-[-150px] right-[-150px] md:bottom-[-400px] md:bottom-[-400px] md:right-[-400px] z-0 overflow-hidden"
+          className="w-[400px] md:w-[900px] h-[400px] md:h-[900px] rounded-full absolute bottom-[-150px] right-[-150px] md:bottom-[-400px] md:right-[-400px] z-0 overflow-hidden"
         />
 
         <Image
           ref={mainImageRef}
-          className="absolute bottom-5 right-15 z-10 w-[200px} hidden md:block"
+          className="absolute md:bottom-5 bottom-36 z-10 w-[270px] md:w-[200px] left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-15"
           src={plates[activeIndex].src}
           alt="plate"
           priority
         />
 
-        <div className="container mx-auto flex items-center justify-between flex-wrap md:flex-nowrap relative z-10 h-full">
+        <div className="container mx-auto flex font-poppins items-center justify-between flex-wrap md:flex-nowrap relative z-10 h-full">
           <div className="md:w-1/2 w-full">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            <h1 className="text-[45px] md:text-[96px] text-white md:mb-4">
               BREAKFAST
             </h1>
-            <p className="text-lg md:text-xl text-gray-100 max-w-xl">
-              Breakfast, often referred to as the ‘most important meal of the
-              day’, provides essential nutrients to kick start our day. It
-              includes a variety of foods, like fruits, cereals, dairy products,
-              and proteins, that contribute to a balanced diet.
+            <p className="text-base md:text-xl text-gray-100 max-w-xl font-normal md:font-semibold">
+              <span className="block md:hidden">
+                {expanded ? fullText : shortText}
+                <button
+                  className="underline"
+                  onClick={() => setExpanded(!expanded)}
+                >
+                  {expanded ? "See less" : "See more"}
+                </button>
+              </span>
+
+              <span className="hidden md:block">{fullText}</span>
             </p>
 
-            <div className="flex mt-2 gap-x-4">
+            <div className="flex mt-90 md:mt-2 gap-x-4">
               {plates.map((plate, index) => {
                 const isClickable = [
                   [0, 1],
@@ -154,7 +167,7 @@ const HeroSection: React.FC = () => {
                       alt={plate.alt}
                       width={200}
                       height={200}
-                      className="w-[200px] h-[200px] transition-transform duration-300"
+                      className="md:w-[200px] md:h-[200px] w-[73px] h-[84px] transition-transform duration-300"
                     />
                     {activeIndex === index && (
                       <div className="h-1 w-12 md:w-36 absolute bottom-[-8] bg-white rounded-full transition-all duration-300" />
