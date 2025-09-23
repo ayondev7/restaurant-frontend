@@ -50,7 +50,7 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between w-full h-20 p-4 md:px-6 absolute top-4 left-0 z-20 font-poppins">
       <div className="h-full flex items-center md:px-6">
-        <h1 className="text-white font-bold text-3xl hidden md:block">RESTAURANT</h1>
+  <h1 className="text-white font-bold text-3xl hidden md:block">RESTAURIO</h1>
       </div>
       
       <div
