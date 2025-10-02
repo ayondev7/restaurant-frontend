@@ -73,9 +73,26 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
     },
   });
 
+  const validateImage = (file: File): boolean => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only JPEG, JPG, PNG, and WebP files are allowed.");
+      return false;
+    }
+    const maxSize = 3 * 1024 * 1024; // 3MB
+    if (file.size > maxSize) {
+      toast.error("File size must be 3MB or less.");
+      return false;
+    }
+    return true;
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const file = e.target.files[0];
+      if (validateImage(file)) {
+        setImage(file);
+      }
     }
   };
 
@@ -158,7 +175,10 @@ const CreateDishForm: React.FC<CreateDishFormProps> = ({ onClose }) => {
               e.preventDefault();
               setDragActive(false);
               if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                setImage(e.dataTransfer.files[0]);
+                const file = e.dataTransfer.files[0];
+                if (validateImage(file)) {
+                  setImage(file);
+                }
               }
             }}
             onClick={() => document.getElementById("file-upload")?.click()}
